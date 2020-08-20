@@ -12,7 +12,7 @@ public class Contract {
 	private Double totalValue;
 
 	// Associations
-	List<Installment> installment = new ArrayList<>();
+	private List<Installment> installments = new ArrayList<>();
 
 	// Buiders
 	public Contract() {
@@ -50,8 +50,17 @@ public class Contract {
 		this.totalValue = totalValue;
 	}
 
-	public List<Installment> getInstallment() {
-		return installment;
+	public List<Installment> getInstallments() {
+		return installments;
+	}
+	
+	// Methods
+	public void addInstallment(Installment installment) {
+		installments.add(installment);
+	}
+	
+	public void removeInstallment(Installment instalment) {
+		installments.remove(instalment);
 	}
 
 }
