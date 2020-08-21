@@ -14,7 +14,7 @@ public class Contract {
 	// Associations
 	private List<Installment> installments = new ArrayList<>();
 
-	// Buiders
+	// Builders
 	public Contract() {
 	}
 

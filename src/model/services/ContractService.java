@@ -1,6 +1,5 @@
 package model.services;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,16 +7,16 @@ import model.entities.Contract;
 import model.entities.Installment;
 
 public class ContractService {
-	
+
 	// Associations
 	private OnlinePaymentService paymentService;
-	
+
 	// Builders
 	public ContractService(OnlinePaymentService paymentService) {
 		this.paymentService = paymentService;
 	}
-	
-	//Accessor Methods
+
+	// Accessor Methods
 	public OnlinePaymentService getPaymentService() {
 		return paymentService;
 	}
@@ -28,16 +27,19 @@ public class ContractService {
 
 	// Methods
 	public void processContract(Contract contract, Integer months) {
-		Date date = contract.getDate();
-		
-		for (int i=1; i<=months; i++) {
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			cal.add(Calendar.MONTH, i);
-			Date dueDate = cal.getTime();
-			double basicPayment = contract.getTotalValue() / months;
-			double amount = paymentService.paymentFee(paymentService.interest(basicPayment, i));
-			contract.addInstallment(new Installment(dueDate, amount));
+		double basicQuota = contract.getTotalValue() / months;
+		for (int i = 1; i <= months; i++) {
+			Date dueDate = addMounths(contract.getDate(), i);
+			double updateQuota = basicQuota + paymentService.interest(basicQuota, i);
+			double fullQuota = updateQuota + paymentService.paymentFee(updateQuota);
+			contract.addInstallment(new Installment(dueDate, fullQuota));
 		}
+	}
+
+	private Date addMounths(Date date, int n) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MONTH, n);
+		return cal.getTime();
 	}
 }

@@ -37,7 +37,7 @@ public class Program {
 		
 		System.out.println("Installments: ");
 		for (Installment i : contract.getInstallments()) {
-			System.out.println(sdf.format(i.getDueDate()) + " - " + String.format("%.2f", i.getAmount()));
+			System.out.println(i);
 		}
 		
 		sc.close();
